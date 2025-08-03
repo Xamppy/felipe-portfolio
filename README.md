@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Angel Code Soluciones - Website
 
-## Getting Started
+Website profesional para Angel Code Soluciones, empresa chilena especializada en desarrollo de software y consultoría tecnológica.
 
-First, run the development server:
+## 🚀 Tecnologías
+
+- **Next.js 14.2.30** con App Router
+- **TypeScript** (modo estricto)
+- **Tailwind CSS** con sistema de diseño personalizado
+- **Framer Motion** para animaciones
+- **React Hook Form** + **Zod** para formularios
+- **EmailJS** para envío de formularios
+- **Lucide React** para iconografía
+
+## 🛠️ Desarrollo
+
+### Instalación
+
+```bash
+npm install
+```
+
+### Servidor de desarrollo
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build de producción
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## 📁 Estructura del Proyecto
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                   # Next.js App Router
+│   ├── globals.css        # Estilos globales
+│   ├── layout.tsx         # Layout principal
+│   └── page.tsx           # Página principal
+├── components/
+│   ├── ui/                # Componentes reutilizables
+│   ├── sections/          # Secciones de la página
+│   ├── pixel-art/         # Componentes con estilo gaming
+│   └── seo/               # Componentes SEO
+└── lib/                   # Utilidades y hooks
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Características
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- ✅ Diseño responsive (mobile-first)
+- ✅ Optimización SEO completa
+- ✅ Animaciones suaves con Framer Motion
+- ✅ Formulario de contacto funcional
+- ✅ Galería de proyectos interactiva
+- ✅ Testimonios de clientes
+- ✅ Optimización de imágenes
+- ✅ Lighthouse score 95+
 
-## Deploy on Vercel
+## 🚀 Despliegue
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Vercel (Recomendado)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run deploy:vercel
+```
+
+### Variables de Entorno
+
+```env
+NEXT_PUBLIC_SITE_URL=https://angelcodesoluciones.cl
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key
+```
+
+## 📞 Contacto
+
+- **Email**: felipe@angelcodesoluciones.com
+- **WhatsApp**: +56 9 2212 6103
+- **Website**: [angelcodesoluciones.cl](https://angelcodesoluciones.cl)
