@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navigation } from "@/components/ui/navigation";
 import { StructuredData } from "@/components/seo/structured-data";
 import { Toaster } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -93,6 +94,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
         <Navigation />
+        <Analytics />
         <main className="relative">
           {children}
         </main>
