@@ -13,7 +13,6 @@ const navigationItems = [
   { name: 'Inicio', href: '#hero' },
   { name: 'Sobre Mí', href: '#about' },
   { name: 'Proyectos', href: '#projects' },
-  { name: 'Trayectoria', href: '#experience' },
   { name: 'Skills', href: '#skills' },
   { name: 'Contacto', href: '#contact' },
 ]

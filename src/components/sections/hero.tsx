@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Github, Linkedin } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, FileDown } from 'lucide-react';
 import { Terminal } from '@/components/ui/terminal';
 
 export function Hero() {
@@ -54,7 +54,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 mt-2"
+              className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 mt-2 pb-3"
             >
               Full Stack Engineer
             </motion.span>
@@ -86,6 +86,15 @@ export function Hero() {
             >
               Ver Proyectos 
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </a>
+            
+            <a 
+              href="/cv_felipe_orellana.pdf" 
+              download
+              className="group flex items-center gap-2 px-6 py-3 bg-transparent hover:bg-slate-800/50 text-slate-300 hover:text-slate-100 rounded-lg transition-all font-medium border border-slate-700 hover:border-slate-600 hover:-translate-y-0.5 backdrop-blur-sm"
+            >
+              <FileDown className="w-4 h-4" />
+              Descargar CV
             </a>
             
             <a 

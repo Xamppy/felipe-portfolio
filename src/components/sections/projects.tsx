@@ -12,21 +12,27 @@ import {
   SiReact,
   SiTypescript,
   SiTailwindcss,
-  SiAngular
+  SiAngular,
+  SiHtml5,
+  SiCss3,
+  SiJavascript,
+  SiMysql
 } from 'react-icons/si';
 
-// Browser Mockup Component
+// Browser Mockup Component with Scroll-on-Hover support
 function BrowserMockup({ 
   children, 
-  className = '' 
+  className = '',
+  scrollable = false
 }: { 
   children: React.ReactNode; 
-  className?: string 
+  className?: string;
+  scrollable?: boolean;
 }) {
   return (
     <div className={`relative rounded-xl overflow-hidden shadow-2xl border border-white/10 ${className}`}>
       {/* Browser Header */}
-      <div className="bg-slate-800 h-7 flex items-center px-3 gap-2">
+      <div className="bg-slate-800 h-7 flex items-center px-3 gap-2 relative z-10">
         {/* Traffic Lights */}
         <div className="flex gap-1.5">
           <div className="w-3 h-3 rounded-full bg-red-500" />
@@ -39,9 +45,32 @@ function BrowserMockup({
         </div>
       </div>
       {/* Browser Content */}
-      <div className="relative overflow-hidden bg-slate-900">
+      <div className={`relative bg-slate-900 ${scrollable ? 'overflow-hidden' : ''}`}>
         {children}
       </div>
+    </div>
+  );
+}
+
+// Scrollable Project Image Component
+function ScrollableProjectImage({ 
+  src, 
+  alt,
+  height = 'h-56 lg:h-64'
+}: { 
+  src: string; 
+  alt: string;
+  height?: string;
+}) {
+  return (
+    <div className={`relative ${height} overflow-hidden`}>
+      <Image
+        src={src}
+        alt={alt}
+        width={800}
+        height={1200}
+        className="w-full h-auto object-cover object-top transition-transform duration-[6000ms] ease-linear group-hover:translate-y-[calc(-100%+16rem)]"
+      />
     </div>
   );
 }
@@ -79,7 +108,7 @@ const featuredProjects: Project[] = [
       { label: 'Landing', value: 'Prod' },
       { label: 'App', value: 'Beta' },
     ],
-    image: '/images/projects/screenshots/estetikflow/1.webp',
+    image: '/images/projects/screenshots/estetikflow/1.png',
     liveUrl: 'https://estetikflow.cl',
     isFeatured: true,
     status: 'En producción',
@@ -100,7 +129,7 @@ const featuredProjects: Project[] = [
       { label: 'Sistemas', value: '5+' },
       { label: 'On-time', value: '100%' },
     ],
-    image: '/images/projects/screenshots/podoclinic/1.webp',
+    image: '/images/projects/screenshots/acs/1.png',
     liveUrl: 'https://angelcodesoluciones.cl',
     isFeatured: true,
   },
@@ -113,11 +142,12 @@ const gridProjects: Project[] = [
     role: 'Full Stack Developer',
     description: 'Sistema de Gestión Académica desarrollado para Duoc UC. Plataforma centralizada para el flujo y control de documentos institucionales.',
     stack: [
-      { name: 'Angular', icon: <SiAngular className="w-4 h-4" /> },
-      { name: 'Django', icon: <SiDjango className="w-4 h-4" /> },
-      { name: 'PostgreSQL', icon: <SiPostgresql className="w-4 h-4" /> },
+      { name: 'HTML5', icon: <SiHtml5 className="w-4 h-4" /> },
+      { name: 'CSS3', icon: <SiCss3 className="w-4 h-4" /> },
+      { name: 'JavaScript', icon: <SiJavascript className="w-4 h-4" /> },
+      { name: 'MySQL', icon: <SiMysql className="w-4 h-4" /> },
     ],
-    image: '/images/projects/screenshots/dara/1.webp',
+    image: '/images/projects/screenshots/dara/1.png',
     tag: 'Academic',
   },
   {
@@ -181,7 +211,7 @@ export function Projects() {
           <div className="w-20 h-1 bg-indigo-500 mx-auto rounded-full" />
         </motion.div>
 
-        {/* Featured Projects - Large Cards */}
+        {/* Featured Projects - Large Cards with Scroll Effect */}
         <div className="grid lg:grid-cols-2 gap-8 mb-16">
           {featuredProjects.map((project, index) => (
             <motion.div
@@ -202,24 +232,25 @@ export function Projects() {
                 </div>
               </div>
 
-              {/* Project Image with Browser Mockup */}
+              {/* Project Image with Browser Mockup + Scroll Effect */}
               <div className="p-6 pt-14">
-                <BrowserMockup className="group-hover:scale-[1.02] group-hover:-translate-y-1 transition-transform duration-500">
+                <BrowserMockup scrollable>
                   {project.image && (
-                    <div className="relative h-48 lg:h-56">
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        className="object-cover object-top"
-                      />
-                    </div>
+                    <ScrollableProjectImage 
+                      src={project.image} 
+                      alt={project.title}
+                      height="h-56 lg:h-64"
+                    />
                   )}
                 </BrowserMockup>
+                {/* Scroll Hint */}
+                <div className="mt-2 text-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <span className="text-xs text-slate-500">↓ Hover para scroll ↓</span>
+                </div>
               </div>
 
               {/* Content */}
-              <div className="p-6 pt-2">
+              <div className="p-6 pt-0">
                 <div className="flex items-center gap-2 text-indigo-400 text-sm font-medium mb-2">
                   <Code2 className="w-4 h-4" />
                   {project.role}
@@ -277,7 +308,7 @@ export function Projects() {
           ))}
         </div>
 
-        {/* Grid Projects */}
+        {/* Grid Projects with Scroll Effect */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {gridProjects.map((project, index) => (
             <motion.div
@@ -297,16 +328,17 @@ export function Projects() {
                 </div>
               )}
 
-              {/* Image */}
+              {/* Image with Scroll Effect */}
               <div className="relative p-3 pb-0">
-                <BrowserMockup className="group-hover:scale-[1.02] transition-transform duration-300">
+                <BrowserMockup scrollable>
                   {project.image && (
-                    <div className="relative h-32">
+                    <div className="relative h-36 overflow-hidden">
                       <Image
                         src={project.image}
                         alt={project.title}
-                        fill
-                        className="object-cover object-top"
+                        width={400}
+                        height={600}
+                        className="w-full h-auto object-cover object-top transition-transform duration-[5000ms] ease-linear group-hover:translate-y-[calc(-100%+9rem)]"
                       />
                     </div>
                   )}
@@ -325,7 +357,7 @@ export function Projects() {
                   {project.description}
                 </p>
 
-                {/* Stack (compact) - pushed to bottom */}
+                {/* Stack - pushed to bottom */}
                 <div className="flex flex-wrap gap-1.5 mt-auto pt-3 border-t border-slate-700/30">
                   {project.stack.map((tech) => (
                     <span
