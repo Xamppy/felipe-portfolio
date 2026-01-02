@@ -14,7 +14,6 @@ const navigationItems = [
   { name: 'Sobre Mí', href: '#about' },
   { name: 'Proyectos', href: '#projects' },
   { name: 'Skills', href: '#skills' },
-  { name: 'Contacto', href: '#contact' },
 ]
 
 export function Navigation({ className }: NavigationProps) {
@@ -130,7 +129,7 @@ export function Navigation({ className }: NavigationProps) {
               whileTap={{ scale: 0.95 }}
               className="ml-4 px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 rounded-lg shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300"
             >
-              Hablemos
+              Contacto
             </motion.a>
           </div>
 
@@ -192,7 +191,7 @@ export function Navigation({ className }: NavigationProps) {
                   onClick={() => scrollToSection('#contact')}
                   className="w-full mt-2 px-4 py-3 text-base font-medium text-white bg-indigo-500 hover:bg-indigo-600 rounded-lg transition-all"
                 >
-                  Hablemos
+                  Contacto
                 </motion.button>
               </div>
             </motion.div>

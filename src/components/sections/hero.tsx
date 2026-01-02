@@ -67,10 +67,7 @@ export function Hero() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed"
           >
-            Ingeniero en formación con mentalidad de producción. Especializado en construir sistemas web escalables usando{' '}
-            <span className="text-slate-200 font-mono text-base">Next.js</span>,{' '}
-            <span className="text-slate-200 font-mono text-base">Django</span> y orquestación{' '}
-            <span className="text-slate-200 font-mono text-base">DevOps</span> real.
+            Ingeniero en formación con mentalidad de producción. Especializado en construir sistemas web escalables, con un diseño amigable y buena usabilidad.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -142,14 +139,19 @@ export function Hero() {
         transition={{ delay: 1.5, duration: 1 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2"
       >
-        <span className="text-xs text-slate-500">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          className="w-5 h-8 rounded-full border-2 border-slate-700 flex justify-center pt-2"
-        >
-          <div className="w-1 h-2 bg-slate-500 rounded-full" />
-        </motion.div>
+        <div className="w-[30px] h-[50px] rounded-full border-2 border-slate-500/30 flex justify-center p-2 box-border">
+          <motion.div 
+            animate={{ 
+              y: [0, 24, 0],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="w-1.5 h-1.5 bg-indigo-500 rounded-full mb-1"
+          />
+        </div>
       </motion.div>
     </section>
   );

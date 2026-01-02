@@ -26,7 +26,7 @@ export function About() {
               className="md:col-span-3 space-y-6 text-slate-300 leading-relaxed text-lg"
             >
               <p>
-                Actualmente curso mi último año de <strong className="text-indigo-400">Ingeniería Civil Informática</strong>, 
+                Actualmente curso mi último año de <strong className="text-indigo-400">Ingeniería en Informática</strong>, 
                 pero mi formación va mucho más allá del aula. He fundado y liderado 
                 <span className="text-slate-100 font-semibold"> Angel Code Soluciones</span>, 
                 donde aprendí que el código es solo una parte de la ecuación.
