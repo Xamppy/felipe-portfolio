@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -10,10 +11,10 @@ interface NavigationProps {
 
 const navigationItems = [
   { name: 'Inicio', href: '#hero' },
-  { name: 'Servicios', href: '#services' },
+  { name: 'Sobre Mí', href: '#about' },
   { name: 'Proyectos', href: '#projects' },
-  { name: 'Proceso', href: '#process' },
-  { name: 'Testimonios', href: '#testimonials' },
+  { name: 'Trayectoria', href: '#experience' },
+  { name: 'Skills', href: '#skills' },
   { name: 'Contacto', href: '#contact' },
 ]
 
@@ -24,7 +25,8 @@ export function Navigation({ className }: NavigationProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      // Update scroll state for glassmorphism effect
+      setIsScrolled(window.scrollY > 20)
       
       // Update active section based on scroll position
       const sections = navigationItems.map(item => item.href.substring(1))
@@ -55,48 +57,90 @@ export function Navigation({ className }: NavigationProps) {
   }
 
   return (
-    <nav
+    <motion.nav
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: 'easeOut' }}
       className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
+        'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         isScrolled
-          ? 'bg-neutral-gray-dark/95 backdrop-blur-lg border-b border-neutral-gray-light/20'
-          : 'bg-transparent',
+          ? 'bg-slate-900/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-black/10'
+          : 'bg-transparent border-b border-transparent',
         className
       )}
     >
-      <div className="container">
+      <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex items-center">
+          <motion.div 
+            className="flex items-center"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
             <button
               onClick={() => scrollToSection('#hero')}
-              className="text-2xl font-bold text-purple-primary hover:text-purple-hover transition-colors"
+              className="group flex items-center gap-2"
             >
-              Angel Code
+              {/* Monogram */}
+              <span className="hidden sm:flex items-center justify-center w-9 h-9 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 text-white font-bold text-sm shadow-lg shadow-indigo-500/25">
+                FO
+              </span>
+              {/* Full Name */}
+              <span className="text-xl font-bold text-slate-100 group-hover:text-indigo-400 transition-colors duration-300">
+                Felipe Orellana
+              </span>
             </button>
-          </div>
+          </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navigationItems.map((item) => (
-              <button
+          <div className="hidden md:flex items-center space-x-1">
+            {navigationItems.map((item, index) => (
+              <motion.button
                 key={item.name}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
                 onClick={() => scrollToSection(item.href)}
                 className={cn(
-                  'nav-link',
-                  activeSection === item.href.substring(1) && 'active'
+                  'relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300',
+                  activeSection === item.href.substring(1)
+                    ? 'text-indigo-400'
+                    : 'text-slate-300 hover:text-slate-100 hover:bg-white/5'
                 )}
               >
                 {item.name}
-              </button>
+                {/* Active Indicator */}
+                {activeSection === item.href.substring(1) && (
+                  <motion.div
+                    layoutId="activeSection"
+                    className="absolute inset-0 bg-indigo-500/10 border border-indigo-500/30 rounded-lg -z-10"
+                    transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+              </motion.button>
             ))}
+            
+            {/* CTA Button */}
+            <motion.a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault()
+                scrollToSection('#contact')
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="ml-4 px-4 py-2 text-sm font-medium text-white bg-indigo-500 hover:bg-indigo-600 rounded-lg shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300"
+            >
+              Hablemos
+            </motion.a>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button
+            <motion.button
+              whileTap={{ scale: 0.9 }}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-text-body hover:text-purple-primary transition-colors"
+              className="p-2 text-slate-300 hover:text-indigo-400 hover:bg-white/5 rounded-lg transition-colors"
               aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-menu"
@@ -106,31 +150,56 @@ export function Navigation({ className }: NavigationProps) {
               ) : (
                 <Menu className="h-6 w-6" />
               )}
-            </button>
+            </motion.button>
           </div>
         </div>
 
         {/* Mobile Navigation Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden" id="mobile-menu">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-neutral-gray-dark/95 backdrop-blur-lg border-t border-neutral-gray-light/20">
-              {navigationItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className={cn(
-                    'block w-full text-left px-3 py-2 rounded-md text-base font-medium nav-link',
-                    activeSection === item.href.substring(1) && 'active'
-                  )}
-                  aria-current={activeSection === item.href.substring(1) ? 'page' : undefined}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              id="mobile-menu"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              className="md:hidden overflow-hidden"
+            >
+              <div className="px-2 pt-2 pb-4 space-y-1 bg-slate-900/90 backdrop-blur-xl border-t border-white/10 rounded-b-xl">
+                {navigationItems.map((item, index) => (
+                  <motion.button
+                    key={item.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2, delay: index * 0.05 }}
+                    onClick={() => scrollToSection(item.href)}
+                    className={cn(
+                      'block w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-all duration-300',
+                      activeSection === item.href.substring(1)
+                        ? 'text-indigo-400 bg-indigo-500/10 border border-indigo-500/30'
+                        : 'text-slate-300 hover:text-slate-100 hover:bg-white/5'
+                    )}
+                    aria-current={activeSection === item.href.substring(1) ? 'page' : undefined}
+                  >
+                    {item.name}
+                  </motion.button>
+                ))}
+                
+                {/* Mobile CTA */}
+                <motion.button
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.2, delay: navigationItems.length * 0.05 }}
+                  onClick={() => scrollToSection('#contact')}
+                  className="w-full mt-2 px-4 py-3 text-base font-medium text-white bg-indigo-500 hover:bg-indigo-600 rounded-lg transition-all"
                 >
-                  {item.name}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
+                  Hablemos
+                </motion.button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </nav>
+    </motion.nav>
   )
 }

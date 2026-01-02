@@ -1,161 +1,147 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import { ArrowRight, Play } from 'lucide-react'
-import { scrollToSection } from '@/lib/scroll'
+import { motion } from 'framer-motion';
+import { ArrowRight, Github, Linkedin } from 'lucide-react';
+import { Terminal } from '@/components/ui/terminal';
 
-interface HeroProps {
-  className?: string
-}
-
-export function Hero({ className }: HeroProps) {
-  const [typedText, setTypedText] = useState('')
-  const fullText = 'Transformamos ideas en soluciones tecnológicas escalables'
-
-  useEffect(() => {
-    let currentIndex = 0
-    const typingInterval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setTypedText(fullText.slice(0, currentIndex))
-        currentIndex++
-      } else {
-        clearInterval(typingInterval)
-      }
-    }, 50)
-
-    return () => clearInterval(typingInterval)
-  }, [])
-
-  const handlePrimaryClick = () => {
-    scrollToSection('contact')
-  }
-
-  const handleSecondaryClick = () => {
-    scrollToSection('projects')
-  }
-
+export function Hero() {
   return (
-    <section
-      id="hero"
-      className={`relative min-h-screen flex items-center justify-center overflow-hidden ${className}`}
+    <section 
+      id="hero" 
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-transparent pt-20 lg:pt-0"
     >
-      {/* Background Image with Overlays */}
-      <div className="absolute inset-0 z-0">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/images/background-image.png"
-            alt="Pixel art mountain background with purple gradient overlay for Angel Code Soluciones website"
-            fill
-            className="object-cover object-center"
-            priority
-            quality={85}
-            sizes="100vw"
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
-          />
-        </div>
+      {/* Grid Pattern Overlay */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.02]"
+        style={{
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                           linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: '50px 50px',
+        }}
+      />
 
-        {/* Dark Overlay for better contrast */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(10,10,10,0.85) 0%, rgba(26,26,26,0.9) 100%)'
-          }}
-        />
+      {/* Static Ambient Gradients */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-[128px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-[128px] pointer-events-none" />
 
-        {/* Purple Gradient Overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(45deg, rgba(139,92,246,0.2) 0%, rgba(124,58,237,0.12) 100%)'
-          }}
-        />
+      <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+        
+        {/* Left Column: Introduction */}
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-6 text-center lg:text-left"
+        >
+          {/* Availability Badge */}
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 text-sm text-indigo-400 mb-4 backdrop-blur-sm"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            Available for Hire 2026
+          </motion.div>
 
-        {/* Additional darkening overlay */}
-        <div
-          className="absolute inset-0 bg-black/30"
-        />
-      </div>
-
-      {/* Floating Elements */}
-      <div className="absolute inset-0 z-10 pointer-events-none">
-        {/* Floating Purple Circles - Below description text only */}
-        <motion.div
-          className="absolute bottom-1/3 left-1/2 w-3 h-3 bg-purple-primary/50 rounded-full blur-sm"
-          animate={{
-            y: [0, -25, 0],
-            x: [0, -35, 0],
-            opacity: [0.5, 0.9, 0.5]
-          }}
-          transition={{ duration: 4.2, repeat: Infinity }}
-        />
-        <motion.div
-          className="absolute bottom-1/3 right-1/2 w-1.5 h-1.5 bg-purple-light/80 rounded-full blur-sm"
-          animate={{
-            opacity: [0.8, 1, 0.8],
-            x: [0, 20, 0],
-            scale: [1, 1.3, 1]
-          }}
-          transition={{ duration: 2.5, repeat: Infinity }}
-        />
-      </div>
-
-      {/* Hero Content */}
-      <div className="relative z-20 container text-center max-w-4xl">
-        <div className="space-y-8">
-          {/* Main Title */}
-          <h1 className="hero-title drop-shadow-2xl">
-            Angel Code Soluciones
+          {/* Title */}
+          <h1 className="text-4xl lg:text-6xl font-bold tracking-tight text-slate-50">
+            Felipe Orellana
+            <motion.span 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400 mt-2"
+            >
+              Full Stack Engineer
+            </motion.span>
           </h1>
 
-          {/* Animated Subtitle - Pixel Art Style */}
-          <div className="min-h-[3rem] flex items-center justify-center">
-            <h2 className="text-xl md:text-2xl text-purple-light font-mono font-bold drop-shadow-lg pixel-text">
-              {typedText}
-              <motion.span
-                className="text-purple-light"
-                animate={{ opacity: [1, 0, 1] }}
-                transition={{ duration: 1, repeat: Infinity }}
-              >
-                █
-              </motion.span>
-            </h2>
-          </div>
-
           {/* Description */}
-          <p className="text-lg md:text-xl text-white/95 max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
-            Especializados en desarrollo de software y automatización de procesos empresariales
-          </p>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="text-lg text-slate-400 max-w-xl mx-auto lg:mx-0 leading-relaxed"
+          >
+            Ingeniero en formación con mentalidad de producción. Especializado en construir sistemas web escalables usando{' '}
+            <span className="text-slate-200 font-mono text-base">Next.js</span>,{' '}
+            <span className="text-slate-200 font-mono text-base">Django</span> y orquestación{' '}
+            <span className="text-slate-200 font-mono text-base">DevOps</span> real.
+          </motion.p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <button
-              onClick={handlePrimaryClick}
-              className="btn-primary flex items-center gap-2 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 group shadow-2xl w-full sm:w-auto"
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="flex flex-wrap gap-4 justify-center lg:justify-start pt-4"
+          >
+            <a 
+              href="#projects" 
+              className="group flex items-center gap-2 px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition-all font-medium shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:-translate-y-0.5"
             >
-              <span className="hidden sm:inline">Solicitar Consulta Gratuita</span>
-              <span className="sm:hidden">Consulta Gratuita</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
+              Ver Proyectos 
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </a>
+            
+            <a 
+              href="https://github.com/Xamppy" 
+              target="_blank" 
+              rel="noreferrer"
+              className="p-3 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition-all hover:-translate-y-0.5 backdrop-blur-sm"
+              aria-label="GitHub Profile"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+            
+            <a 
+              href="https://www.linkedin.com/in/felipe-orellana-álvarez-965984333/"
+              target="_blank" 
+              rel="noreferrer"
+              className="p-3 bg-slate-800/80 hover:bg-slate-700 text-slate-300 rounded-lg border border-slate-700 transition-all hover:-translate-y-0.5 backdrop-blur-sm"
+              aria-label="LinkedIn Profile"
+            >
+              <Linkedin className="w-5 h-5" />
+            </a>
+          </motion.div>
+        </motion.div>
 
-            <button
-              onClick={handleSecondaryClick}
-              className="btn-secondary flex items-center gap-2 text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 group shadow-xl backdrop-blur-sm bg-white/10 border-white/30 w-full sm:w-auto"
-            >
-              <Play className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              <span className="hidden sm:inline">Ver Nuestros Proyectos</span>
-              <span className="sm:hidden">Ver Proyectos</span>
-            </button>
+        {/* Right Column: Interactive Terminal */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="w-full max-w-xl mx-auto"
+        >
+          <div className="relative group">
+            {/* Glow Effect Behind Terminal */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+            <Terminal />
           </div>
+        </motion.div>
 
-
-        </div>
       </div>
 
-
+      {/* Scroll Indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden lg:flex flex-col items-center gap-2"
+      >
+        <span className="text-xs text-slate-500">Scroll</span>
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          className="w-5 h-8 rounded-full border-2 border-slate-700 flex justify-center pt-2"
+        >
+          <div className="w-1 h-2 bg-slate-500 rounded-full" />
+        </motion.div>
+      </motion.div>
     </section>
-  )
+  );
 }

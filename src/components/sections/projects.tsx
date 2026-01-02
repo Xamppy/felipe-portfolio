@@ -1,318 +1,366 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { ProjectCard } from '@/components/pixel-art/project-card'
-import { ProjectModal } from '@/components/pixel-art/project-modal'
-import { ImageGallery } from '@/components/ui/image-gallery'
-import { useScrollAnimation } from '@/lib/hooks'
+import Image from 'next/image';
+import { motion } from 'framer-motion';
+import { ExternalLink, Github, ArrowRight, Rocket, Code2, GraduationCap, Sparkles } from 'lucide-react';
+import { 
+  SiNextdotjs, 
+  SiDjango, 
+  SiDocker, 
+  SiNginx, 
+  SiPostgresql,
+  SiReact,
+  SiTypescript,
+  SiTailwindcss,
+  SiAngular
+} from 'react-icons/si';
 
-interface Technology {
-  name: string
-  icon: string
-}
-
-interface Achievement {
-  title: string
-  description: string
-  icon: string
+// Browser Mockup Component
+function BrowserMockup({ 
+  children, 
+  className = '' 
+}: { 
+  children: React.ReactNode; 
+  className?: string 
+}) {
+  return (
+    <div className={`relative rounded-xl overflow-hidden shadow-2xl border border-white/10 ${className}`}>
+      {/* Browser Header */}
+      <div className="bg-slate-800 h-7 flex items-center px-3 gap-2">
+        {/* Traffic Lights */}
+        <div className="flex gap-1.5">
+          <div className="w-3 h-3 rounded-full bg-red-500" />
+          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+          <div className="w-3 h-3 rounded-full bg-green-500" />
+        </div>
+        {/* URL Bar */}
+        <div className="flex-1 ml-2">
+          <div className="bg-slate-700/50 rounded h-4 w-32 mx-auto" />
+        </div>
+      </div>
+      {/* Browser Content */}
+      <div className="relative overflow-hidden bg-slate-900">
+        {children}
+      </div>
+    </div>
+  );
 }
 
 interface Project {
-  id: string
-  title: string
-  description: string
-  stack: Technology[]
-  industry: string
-  timeline: string
-  roi: string
-  thumbnail: string
-  previewImage?: string
-  screenshots: string[]
-  architecture: string
-  achievements: Achievement[]
+  id: string;
+  title: string;
+  role: string;
+  description: string;
+  longDescription?: string;
+  stack: { name: string; icon: React.ReactNode }[];
+  metrics?: { label: string; value: string }[];
+  image?: string;
+  liveUrl?: string;
+  githubUrl?: string;
+  isFeatured?: boolean;
+  status?: string;
+  tag?: string;
 }
 
-const projects: Project[] = [
+const featuredProjects: Project[] = [
+  {
+    id: 'estetikflow',
+    title: 'EstetikFlow',
+    role: 'Founder & Lead Developer',
+    description: 'SaaS de Gestión para Estética Integral',
+    longDescription: 'Plataforma SaaS moderna con Landing Page de alta conversión y aplicativo web para gestión de agendas, fichas clínicas e inventario. Diseño UI/UX premium orientado a profesionales de la estética.',
+    stack: [
+      { name: 'Next.js 14', icon: <SiNextdotjs className="w-4 h-4" /> },
+      { name: 'TailwindCSS', icon: <SiTailwindcss className="w-4 h-4" /> },
+      { name: 'Django', icon: <SiDjango className="w-4 h-4" /> },
+      { name: 'PostgreSQL', icon: <SiPostgresql className="w-4 h-4" /> },
+    ],
+    metrics: [
+      { label: 'Landing', value: 'Prod' },
+      { label: 'App', value: 'Beta' },
+    ],
+    image: '/images/projects/screenshots/estetikflow/1.webp',
+    liveUrl: 'https://estetikflow.cl',
+    isFeatured: true,
+    status: 'En producción',
+  },
+  {
+    id: 'angel-code',
+    title: 'Angel Code Soluciones',
+    role: 'Founder & Lead Engineer',
+    description: 'Agencia de Desarrollo de Software',
+    longDescription: 'Emprendimiento técnico donde lideré el desarrollo full-stack de 5+ sistemas de gestión empresarial. Diseñé arquitecturas escalables, administré servidores VPS y aseguré 100% de entregas on-time.',
+    stack: [
+      { name: 'Next.js', icon: <SiNextdotjs className="w-4 h-4" /> },
+      { name: 'Django', icon: <SiDjango className="w-4 h-4" /> },
+      { name: 'Docker', icon: <SiDocker className="w-4 h-4" /> },
+      { name: 'Nginx', icon: <SiNginx className="w-4 h-4" /> },
+    ],
+    metrics: [
+      { label: 'Sistemas', value: '5+' },
+      { label: 'On-time', value: '100%' },
+    ],
+    image: '/images/projects/screenshots/podoclinic/1.webp',
+    liveUrl: 'https://angelcodesoluciones.cl',
+    isFeatured: true,
+  },
+];
+
+const gridProjects: Project[] = [
+  {
+    id: 'dara',
+    title: 'DARA - Gestor Documental',
+    role: 'Full Stack Developer',
+    description: 'Sistema de Gestión Académica desarrollado para Duoc UC. Plataforma centralizada para el flujo y control de documentos institucionales.',
+    stack: [
+      { name: 'Angular', icon: <SiAngular className="w-4 h-4" /> },
+      { name: 'Django', icon: <SiDjango className="w-4 h-4" /> },
+      { name: 'PostgreSQL', icon: <SiPostgresql className="w-4 h-4" /> },
+    ],
+    image: '/images/projects/screenshots/dara/1.webp',
+    tag: 'Academic',
+  },
   {
     id: 'podoclinic',
-    title: 'Sistema Podoclinic',
-    description: 'Sistema integral de gestión para clínica podológica que optimiza el manejo de pacientes, fichas clínicas, inventario y costos operacionales.',
+    title: 'Podoclinic',
+    role: 'Full Stack Developer',
+    description: 'Sistema de gestión clínica para podología con agendamiento, fichas de pacientes y facturación integrada.',
     stack: [
-      { name: 'React', icon: '⚛️' },
-      { name: 'Django', icon: '🐍' },
-      { name: 'PostgreSQL', icon: '🐘' },
-      { name: 'Docker', icon: '🐳' },
-      { name: 'Nginx', icon: '🌐' },
-      { name: 'Cloudflare', icon: '☁️' },
-      { name: 'CI/CD', icon: '🔄' },
-      { name: 'Bizagi', icon: '📋' }
+      { name: 'React', icon: <SiReact className="w-4 h-4" /> },
+      { name: 'Django', icon: <SiDjango className="w-4 h-4" /> },
+      { name: 'PostgreSQL', icon: <SiPostgresql className="w-4 h-4" /> },
     ],
-    industry: 'Salud',
-    timeline: '2 meses',
-    roi: '+70% eficiencia',
-    thumbnail: '/images/projects/podoclinic.svg',
-    previewImage: '/images/projects/screenshots/podoclinic/1.webp',
-    screenshots: [
-      '/images/projects/screenshots/podoclinic/1.webp',
-      '/images/projects/screenshots/podoclinic/2.webp',
-      '/images/projects/screenshots/podoclinic/3.webp',
-      '/images/projects/screenshots/podoclinic/4.webp',
-      '/images/projects/screenshots/podoclinic/5.webp',
-      '/images/projects/screenshots/podoclinic/6.webp',
-      '/images/projects/screenshots/podoclinic/7.webp',
-      '/images/projects/screenshots/podoclinic/8.webp',
-      '/images/projects/screenshots/podoclinic/9.webp',
-      '/images/projects/screenshots/podoclinic/10.webp',
-      '/images/projects/screenshots/podoclinic/11.webp'
-    ],
-    architecture: 'Arquitectura de microservicios con frontend React, backend Django REST API, base de datos PostgreSQL, contenedorización con Docker y despliegue en la nube con Nginx como proxy reverso y Cloudflare para CDN y seguridad.',
-    achievements: [
-      { title: 'Eficiencia Mejorada', description: '70% mejora en gestión de pacientes', icon: '📈' },
-      { title: 'Automatización', description: 'Procesos manuales automatizados', icon: '🤖' },
-      { title: 'Satisfacción Cliente', description: '5 estrellas de satisfacción', icon: '⭐' }
-    ]
+    image: '/images/projects/screenshots/podoclinic/1.webp',
+    tag: 'Healthcare',
   },
   {
-    id: 'venta-mayorista',
-    title: 'Sistema de Venta Mayorista',
-    description: 'Plataforma completa de ventas mayoristas con gestión de inventario, clientes, pedidos y análisis de ventas en tiempo real.',
+    id: 'minimarket',
+    title: 'Minimarket Don Ale',
+    role: 'Full Stack Developer',
+    description: 'E-commerce B2B con catálogo dinámico y despliegue automatizado con Dokploy en VPS propio.',
     stack: [
-      { name: 'Next.js', icon: '▲' },
-      { name: 'TypeScript', icon: '📘' },
-      { name: 'Supabase', icon: '⚡' },
-      { name: 'PostgreSQL', icon: '🐘' },
-      { name: 'TailwindCSS', icon: '🎨' },
-      { name: 'CI/CD', icon: '🔄' },
-      { name: 'Bizagi', icon: '📋' }
+      { name: 'Next.js', icon: <SiNextdotjs className="w-4 h-4" /> },
+      { name: 'TypeScript', icon: <SiTypescript className="w-4 h-4" /> },
+      { name: 'PostgreSQL', icon: <SiPostgresql className="w-4 h-4" /> },
     ],
-    industry: 'Retail',
-    timeline: '2 meses',
-    roi: '+90% eficiencia',
-    thumbnail: '/images/projects/mayorista.svg',
-    previewImage: '/images/projects/screenshots/mayorista/1.webp',
-    screenshots: [
-      '/images/projects/screenshots/mayorista/1.webp',
-      '/images/projects/screenshots/mayorista/2.webp',
-      '/images/projects/screenshots/mayorista/3.webp',
-      '/images/projects/screenshots/mayorista/4.webp',
-      '/images/projects/screenshots/mayorista/5.webp',
-      '/images/projects/screenshots/mayorista/6.webp',
-      '/images/projects/screenshots/mayorista/7.webp',
-      '/images/projects/screenshots/mayorista/8.webp',
-      '/images/projects/screenshots/mayorista/9.webp',
-      '/images/projects/screenshots/mayorista/10.webp',
-      '/images/projects/screenshots/mayorista/11.webp'
-    ],
-    architecture: 'Aplicación full-stack con Next.js y TypeScript, backend serverless con Supabase, base de datos PostgreSQL, autenticación y autorización integrada, y procesos de negocio modelados con Bizagi.',
-    achievements: [
-      { title: 'ROI Excepcional', description: '90% mejora en eficiencia operacional', icon: '💰' },
-      { title: 'Escalabilidad', description: 'Arquitectura serverless escalable', icon: '📊' },
-      { title: 'UX Moderna', description: 'Interfaz intuitiva y responsive', icon: '✨' }
-    ]
+    image: '/images/projects/screenshots/mayorista/1.webp',
+    tag: 'E-commerce',
   },
   {
-    id: 'sistema-kinesiologico',
-    title: 'Sistema Kinesiológico Deportivo',
-    description: 'Sistema especializado para gestión kinesiológica de equipos de fútbol con seguimiento de lesiones, tratamientos y rendimiento.',
+    id: 'kinesiologia',
+    title: 'Sistema Kinesiológico',
+    role: 'Full Stack Developer',
+    description: 'Sistema de gestión deportiva para seguimiento de lesiones y planes de tratamiento personalizados.',
     stack: [
-      { name: 'React', icon: '⚛️' },
-      { name: 'Django', icon: '🐍' },
-      { name: 'PostgreSQL', icon: '🐘' },
-      { name: 'Docker', icon: '🐳' },
-      { name: 'Nginx', icon: '🌐' },
-      { name: 'Cloudflare', icon: '☁️' }
+      { name: 'React', icon: <SiReact className="w-4 h-4" /> },
+      { name: 'Django', icon: <SiDjango className="w-4 h-4" /> },
+      { name: 'Docker', icon: <SiDocker className="w-4 h-4" /> },
     ],
-    industry: 'Salud y deporte',
-    timeline: '3 meses',
-    roi: '+80% eficiencia',
-    thumbnail: '/images/projects/kinesiologia.svg',
-    previewImage: '/images/projects/screenshots/kinesiologia/1.webp',
-    screenshots: [
-      '/images/projects/screenshots/kinesiologia/1.webp',
-      '/images/projects/screenshots/kinesiologia/2.webp',
-      '/images/projects/screenshots/kinesiologia/3.webp',
-      '/images/projects/screenshots/kinesiologia/4.webp',
-      '/images/projects/screenshots/kinesiologia/5.webp',
-      '/images/projects/screenshots/kinesiologia/5.1.webp',
-      '/images/projects/screenshots/kinesiologia/6.webp',
-      '/images/projects/screenshots/kinesiologia/6.1.webp',
-      '/images/projects/screenshots/kinesiologia/7.webp',
-      '/images/projects/screenshots/kinesiologia/8.webp',
-      '/images/projects/screenshots/kinesiologia/9.webp',
-      '/images/projects/screenshots/kinesiologia/10.webp',
-      '/images/projects/screenshots/kinesiologia/11.webp',
-      '/images/projects/screenshots/kinesiologia/12.webp',
-      '/images/projects/screenshots/kinesiologia/13.webp',
-      '/images/projects/screenshots/kinesiologia/14.webp',
-      '/images/projects/screenshots/kinesiologia/15.webp',
-      '/images/projects/screenshots/kinesiologia/16.webp',
-      '/images/projects/screenshots/kinesiologia/17.webp',
-      '/images/projects/screenshots/kinesiologia/19.webp'
-    ],
-    architecture: 'Sistema web con React frontend, Django REST API backend, base de datos PostgreSQL para almacenamiento de datos médicos, contenedorización con Docker y despliegue seguro en la nube.',
-    achievements: [
-      { title: 'Gestión Médica', description: 'Seguimiento completo de lesiones', icon: '🏥' },
-      { title: 'Rendimiento', description: 'Análisis de performance deportiva', icon: '⚽' },
-      { title: 'Usabilidad', description: 'Interfaz intuitiva para profesionales', icon: '👨‍⚕️' }
-    ]
-  }
-]
+    image: '/images/projects/screenshots/kinesiologia/1.webp',
+    tag: 'Healthcare',
+  },
+];
 
-interface ProjectsProps {
-  className?: string
-}
-
-export function Projects({ className }: ProjectsProps) {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isGalleryOpen, setIsGalleryOpen] = useState(false)
-  const [galleryImages, setGalleryImages] = useState<{src: string, alt: string, title?: string}[]>([])
-  const [galleryTitle, setGalleryTitle] = useState('')
-  const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation()
-  const { ref: gridRef, isVisible: gridVisible } = useScrollAnimation()
-
-  const handleViewDetails = (projectId: string) => {
-    const project = projects.find(p => p.id === projectId)
-    if (project) {
-      setSelectedProject(project)
-      setIsModalOpen(true)
-    }
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setSelectedProject(null)
-  }
-
-  const handleViewImages = (projectId: string) => {
-    const project = projects.find(p => p.id === projectId)
-    if (project && project.screenshots.length > 0) {
-      setGalleryImages(
-        project.screenshots.map((screenshot, index) => ({
-          src: screenshot,
-          alt: `${project.title} - Screenshot ${index + 1}`,
-          title: `${project.title} - Captura ${index + 1}`
-        }))
-      )
-      setGalleryTitle(project.title)
-      setIsGalleryOpen(true)
-    }
-  }
-
-  const handleCloseGallery = () => {
-    setIsGalleryOpen(false)
-    setGalleryImages([])
-    setGalleryTitle('')
-  }
-
-  const handleConsultProject = (projectTitle: string) => {
-    // Guardar el proyecto seleccionado para el formulario de contacto
-    localStorage.setItem('selectedProject', projectTitle)
-    
-    // Scroll al formulario de contacto
-    const element = document.getElementById('contact')
-    element?.scrollIntoView({ behavior: 'smooth' })
-    
-    // Cerrar el modal
-    setIsModalOpen(false)
-    setSelectedProject(null)
-  }
-
+export function Projects() {
   return (
-    <>
-      <section id="projects" className={`section-padding bg-neutral-black ${className}`}>
-        <div className="container">
-          {/* Section Header */}
-          <motion.div 
-            ref={headerRef}
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 50 }}
-            animate={headerVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            <h2 className="section-title mb-6">
-              Proyectos Destacados
-            </h2>
-            <p className="body-large max-w-3xl mx-auto text-neutral-white/80">
-              Explora nuestros proyectos más exitosos, cada uno diseñado con tecnologías de vanguardia
-              y enfoque en resultados medibles para nuestros clientes.
-            </p>
-          </motion.div>
+    <section id="projects" className="py-24 bg-transparent relative">
+      <div className="container mx-auto px-4">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center space-y-4 mb-16"
+        >
+          <h2 className="text-3xl lg:text-4xl font-bold text-slate-50">
+            Proyectos Destacados
+          </h2>
+          <p className="text-slate-400 max-w-2xl mx-auto">
+            Sistemas reales en producción, usados por clientes reales.
+          </p>
+          <div className="w-20 h-1 bg-indigo-500 mx-auto rounded-full" />
+        </motion.div>
 
-          {/* Projects Grid */}
-          <motion.div 
-            ref={gridRef}
-            className="projects-grid"
-            initial={{ opacity: 0 }}
-            animate={gridVisible ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {projects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={gridVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                transition={{ 
-                  duration: 0.4, 
-                  delay: gridVisible ? 0.05 * index : 0,
-                  ease: [0.25, 0.46, 0.45, 0.94]
-                }}
-                className="h-full"
-              >
-                <ProjectCard
-                  id={project.id}
-                  title={project.title}
-                  description={project.description}
-                  stack={project.stack}
-                  industry={project.industry}
-                  timeline={project.timeline}
-                  roi={project.roi}
-                  thumbnail={project.thumbnail}
-                  previewImage={project.previewImage}
-                  screenshots={project.screenshots}
-                  achievements={project.achievements}
-                  onViewDetails={handleViewDetails}
-                  onViewImages={handleViewImages}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Bottom CTA */}
-          <div className="text-center mt-16">
-            <p className="body-normal text-neutral-white/70 mb-6">
-              ¿Tienes un proyecto en mente?
-            </p>
-            <button
-              onClick={() => {
-                const element = document.getElementById('contact')
-                element?.scrollIntoView({ behavior: 'smooth' })
-              }}
-              className="btn-primary"
+        {/* Featured Projects - Large Cards */}
+        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+          {featuredProjects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.1 }}
+              className="group relative bg-slate-800/30 border border-slate-700/50 rounded-2xl overflow-hidden backdrop-blur-sm hover:border-indigo-500/30 transition-all duration-500"
             >
-              Iniciar Proyecto
-            </button>
-          </div>
+              {/* Featured Badge */}
+              <div className="absolute top-4 left-4 z-20">
+                <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-500/20 border border-indigo-500/30 rounded-full backdrop-blur-sm">
+                  {index === 0 ? <Sparkles className="w-4 h-4 text-indigo-400" /> : <Rocket className="w-4 h-4 text-indigo-400" />}
+                  <span className="text-sm font-medium text-indigo-400">
+                    {index === 0 ? 'Nuevo' : 'Case Study'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Project Image with Browser Mockup */}
+              <div className="p-6 pt-14">
+                <BrowserMockup className="group-hover:scale-[1.02] group-hover:-translate-y-1 transition-transform duration-500">
+                  {project.image && (
+                    <div className="relative h-48 lg:h-56">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover object-top"
+                      />
+                    </div>
+                  )}
+                </BrowserMockup>
+              </div>
+
+              {/* Content */}
+              <div className="p-6 pt-2">
+                <div className="flex items-center gap-2 text-indigo-400 text-sm font-medium mb-2">
+                  <Code2 className="w-4 h-4" />
+                  {project.role}
+                </div>
+
+                <h3 className="text-xl font-bold text-slate-50 mb-2 group-hover:text-indigo-400 transition-colors">
+                  {project.title}
+                </h3>
+
+                <p className="text-sm text-slate-500 mb-3">{project.description}</p>
+                <p className="text-sm text-slate-400 leading-relaxed mb-4">
+                  {project.longDescription}
+                </p>
+
+                {/* Stack */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.stack.map((tech) => (
+                    <span
+                      key={tech.name}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-800/50 border border-slate-700/50 rounded-lg text-xs text-slate-300"
+                    >
+                      {tech.icon}
+                      {tech.name}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Metrics & Actions */}
+                <div className="flex items-center justify-between pt-4 border-t border-slate-700/50">
+                  {project.metrics && (
+                    <div className="flex gap-6">
+                      {project.metrics.map((metric) => (
+                        <div key={metric.label}>
+                          <div className="text-lg font-bold text-indigo-400">{metric.value}</div>
+                          <div className="text-xs text-slate-500">{metric.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm rounded-lg transition-all"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Ver Sitio
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </section>
 
-      {/* Project Modal */}
-      <ProjectModal
-        project={selectedProject}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onViewImages={handleViewImages}
-        onConsultProject={handleConsultProject}
-      />
+        {/* Grid Projects */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {gridProjects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.05 }}
+              className="group relative flex flex-col bg-slate-800/30 border border-slate-700/50 rounded-xl overflow-hidden hover:border-slate-600/50 transition-all"
+            >
+              {/* Tag */}
+              {project.tag && (
+                <div className="absolute top-3 right-3 z-10">
+                  <span className="px-2 py-0.5 text-[10px] font-medium bg-slate-800/80 border border-slate-700 rounded text-slate-400 backdrop-blur-sm">
+                    {project.tag}
+                  </span>
+                </div>
+              )}
 
-      {/* Image Gallery */}
-      <ImageGallery
-        images={galleryImages}
-        isOpen={isGalleryOpen}
-        onClose={handleCloseGallery}
-        projectTitle={galleryTitle}
-      />
-    </>
-  )
+              {/* Image */}
+              <div className="relative p-3 pb-0">
+                <BrowserMockup className="group-hover:scale-[1.02] transition-transform duration-300">
+                  {project.image && (
+                    <div className="relative h-32">
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover object-top"
+                      />
+                    </div>
+                  )}
+                </BrowserMockup>
+              </div>
+
+              {/* Content */}
+              <div className="flex flex-col flex-grow p-4">
+                <div className="text-xs text-indigo-400 font-medium mb-1">
+                  {project.role}
+                </div>
+                <h3 className="text-sm font-semibold text-slate-100 mb-2 group-hover:text-indigo-400 transition-colors">
+                  {project.title}
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed mb-4 flex-grow">
+                  {project.description}
+                </p>
+
+                {/* Stack (compact) - pushed to bottom */}
+                <div className="flex flex-wrap gap-1.5 mt-auto pt-3 border-t border-slate-700/30">
+                  {project.stack.map((tech) => (
+                    <span
+                      key={tech.name}
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-slate-900/50 border border-slate-700/50 rounded text-[10px] text-slate-400"
+                      title={tech.name}
+                    >
+                      {tech.icon}
+                      <span className="hidden sm:inline">{tech.name}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* View More Link */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mt-12"
+        >
+          <a
+            href="https://github.com/Xamppy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-slate-400 hover:text-indigo-400 transition-colors"
+          >
+            Ver más en GitHub
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </motion.div>
+      </div>
+    </section>
+  );
 }
