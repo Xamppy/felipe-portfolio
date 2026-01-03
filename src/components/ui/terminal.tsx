@@ -120,9 +120,23 @@ export function Terminal({ autoType = true, initialCommands = ['whoami'], classN
   const [currentInput, setCurrentInput] = useState('')
   const [isTyping, setIsTyping] = useState(false)
   const [cursorVisible, setCursorVisible] = useState(true)
+  const [inputMode, setInputMode] = useState<'command' | 'password'>('command')
   const inputRef = useRef<HTMLInputElement>(null)
   const terminalRef = useRef<HTMLDivElement>(null)
   const hasAutoTyped = useRef(false)
+
+  // Secret Easter Egg ASCII Art
+  const HEART_ART = `
+     ****     ****
+   **    ** **    **
+  **      ***      **
+  **               **
+   **             **
+    **           **
+      **       **
+        **   **
+          ***
+           *`
 
   // Cursor blink effect
   useEffect(() => {
@@ -142,6 +156,40 @@ export function Terminal({ autoType = true, initialCommands = ['whoami'], classN
   // Execute command
   const executeCommand = useCallback((cmd: string) => {
     const trimmedCmd = cmd.trim().toLowerCase()
+    
+    // Handle password mode for Easter Egg
+    if (inputMode === 'password') {
+      if (cmd.trim() === '250724') {
+        setHistory(prev => [...prev, { 
+          command: '********', 
+          output: (
+            <div className="space-y-2">
+              <pre className="text-pink-500 whitespace-pre font-mono text-xs leading-tight">{HEART_ART}</pre>
+              <div className="text-pink-400 font-medium mt-4">
+                Constanza Javiera De La Fuente Roa, eres el amor de mi alma 💕
+              </div>
+            </div>
+          )
+        }])
+      } else {
+        setHistory(prev => [...prev, { 
+          command: '********', 
+          output: <div className="text-red-400">Acceso denegado.</div>
+        }])
+      }
+      setInputMode('command')
+      return
+    }
+    
+    // Secret trigger - not in help
+    if (trimmedCmd === 'miñimi') {
+      setHistory(prev => [...prev, { 
+        command: cmd, 
+        output: <div className="text-pink-400">🔒 Ingrese contraseña:</div>
+      }])
+      setInputMode('password')
+      return
+    }
     
     if (trimmedCmd === 'clear') {
       setHistory([])
@@ -163,7 +211,7 @@ export function Terminal({ autoType = true, initialCommands = ['whoami'], classN
     )
 
     setHistory(prev => [...prev, { command: cmd, output }])
-  }, [])
+  }, [inputMode, HEART_ART])
 
   // Auto-type effect for initial commands
   useEffect(() => {
@@ -250,7 +298,9 @@ export function Terminal({ autoType = true, initialCommands = ['whoami'], classN
 
           {/* Current Input Line */}
           <div className="flex items-center gap-2">
-            <span className="text-terminal-prompt">$</span>
+            <span className="text-terminal-prompt">
+              {inputMode === 'password' ? '🔐' : '$'}
+            </span>
             <div className="flex-1 relative">
               <span className="text-terminal-text">{currentInput}</span>
               <span 
@@ -260,7 +310,7 @@ export function Terminal({ autoType = true, initialCommands = ['whoami'], classN
               />
               <input
                 ref={inputRef}
-                type="text"
+                type={inputMode === 'password' ? 'password' : 'text'}
                 value={currentInput}
                 onChange={(e) => !isTyping && setCurrentInput(e.target.value)}
                 onKeyDown={handleKeyDown}
