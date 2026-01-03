@@ -28,11 +28,11 @@ const COMMANDS: Record<string, () => React.ReactNode> = {
       <div className="text-primary-light">├── Backend:</div>
       <div className="pl-4 text-neutral-gray-text">Django, FastAPI, Node.js</div>
       <div className="text-primary-light">├── Frontend:</div>
-      <div className="pl-4 text-neutral-gray-text">React, Next.js, TailwindCSS</div>
+      <div className="pl-4 text-neutral-gray-text">React, Next.js, TailwindCSS, Vite</div>
       <div className="text-primary-light">├── DevOps:</div>
-      <div className="pl-4 text-neutral-gray-text">Docker, Nginx, GitHub Actions, Linux</div>
+      <div className="pl-4 text-neutral-gray-text">Docker, Nginx, Vercel, Cloudflare</div>
       <div className="text-primary-light">└── Data:</div>
-      <div className="pl-4 text-neutral-gray-text">PostgreSQL, Pandas, Jupyter</div>
+      <div className="pl-4 text-neutral-gray-text">PostgreSQL, MySQL, Pandas</div>
     </div>
   ),
   
@@ -47,10 +47,12 @@ const COMMANDS: Record<string, () => React.ReactNode> = {
   'ls projects/': () => (
     <div className="text-terminal-text space-y-1">
       <div className="text-primary-light">drwxr-xr-x</div>
+      <div className="pl-4">├── estetikflow/</div>
       <div className="pl-4">├── angel-code-soluciones/</div>
-      <div className="pl-4">├── sistema-clinico/</div>
-      <div className="pl-4">├── venta-mayorista/</div>
-      <div className="pl-4">└── kinesiologia-deportiva/</div>
+      <div className="pl-4">├── retorno-seguro-chile/</div>
+      <div className="pl-4">├── dara-gestor-documental/</div>
+      <div className="pl-4">├── podoclinic/</div>
+      <div className="pl-4">└── minimarket-don-ale/</div>
     </div>
   ),
   
@@ -69,9 +71,9 @@ const COMMANDS: Record<string, () => React.ReactNode> = {
       <pre className="text-primary-light text-xs leading-tight">
 {`        .--.        `}<span className="text-neutral-white">felipe@portfolio</span>{`
        |o_o |       `}<span className="text-neutral-gray-text">-----------------</span>{`
-       |:_/ |       `}<span className="text-primary-light">OS:</span>{` Arch Linux btw`}{`
-      //   \\ \\      `}<span className="text-primary-light">Shell:</span>{` zsh + oh-my-zsh`}{`
-     (|     | )     `}<span className="text-primary-light">Editor:</span>{` Neovim`}{`
+       |:_/ |       `}<span className="text-primary-light">OS:</span>{` Win11 / EndeavourOS`}{`
+      //   \\ \\      `}<span className="text-primary-light">Shell:</span>{` pwsh / zsh`}{`
+     (|     | )     `}<span className="text-primary-light">Editor:</span>{` VS Code + Neovim`}{`
     /'\\_   _/\`\\    `}<span className="text-primary-light">Stack:</span>{` React + Django`}{`
     \\___)=(___/    `}<span className="text-primary-light">Coffee:</span>{` ∞ cups/day`}
       </pre>
