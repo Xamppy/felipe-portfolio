@@ -126,7 +126,16 @@ export function Contact() {
               O envíame un mensaje directo
             </h3>
 
-            <form className="space-y-4 max-w-xl mx-auto">
+            <form 
+              action="https://formsubmit.co/f.orellanalvarez@gmail.com" 
+              method="POST"
+              className="space-y-4 max-w-xl mx-auto"
+            >
+              {/* FormSubmit Configuration */}
+              <input type="hidden" name="_subject" value="Nuevo mensaje desde tu Portfolio" />
+              <input type="hidden" name="_captcha" value="false" />
+              <input type="hidden" name="_next" value="https://felipeorellana.dev/#contact" />
+              
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
@@ -136,6 +145,7 @@ export function Contact() {
                     type="text"
                     id="name"
                     name="name"
+                    required
                     placeholder="Tu nombre"
                     className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
                   />
@@ -148,6 +158,7 @@ export function Contact() {
                     type="email"
                     id="email"
                     name="email"
+                    required
                     placeholder="tu@email.com"
                     className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
                   />
@@ -162,6 +173,7 @@ export function Contact() {
                   id="message"
                   name="message"
                   rows={4}
+                  required
                   placeholder="Cuéntame sobre tu proyecto u oportunidad..."
                   className="w-full px-4 py-3 bg-slate-900/50 border border-slate-700 rounded-lg text-slate-100 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all resize-none"
                 />

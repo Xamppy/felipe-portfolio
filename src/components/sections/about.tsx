@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Server, Code2, Database, ShieldCheck } from 'lucide-react';
+import { Server, Database, ShieldCheck } from 'lucide-react';
 
 export function About() {
   return (

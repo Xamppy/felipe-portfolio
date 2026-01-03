@@ -65,6 +65,11 @@ export const metadata: Metadata = {
     title: "Felipe Orellana - Full Stack Engineer",
     description: "Ingeniero de Software especializado en desarrollo Full Stack con Next.js, Django y DevOps.",
   },
+  icons: {
+    icon: "/favicon.png",
+    shortcut: "/favicon.png",
+    apple: "/favicon.png",
+  },
   category: "technology",
 };
 
