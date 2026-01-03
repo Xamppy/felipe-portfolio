@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, ArrowRight, Rocket, Code2, GraduationCap, Sparkles, Shield } from 'lucide-react';
+import { ExternalLink, ArrowRight, Rocket, Code2, Sparkles, Shield } from 'lucide-react';
 import { 
   SiNextdotjs, 
   SiDjango, 
@@ -12,14 +12,12 @@ import {
   SiReact,
   SiTypescript,
   SiTailwindcss,
-  SiAngular,
   SiHtml5,
   SiCss3,
   SiJavascript,
   SiMysql,
   SiVite,
-  SiVercel,
-  SiGooglemaps
+  SiVercel
 } from 'react-icons/si';
 
 // Browser Mockup Component with Scroll-on-Hover support
