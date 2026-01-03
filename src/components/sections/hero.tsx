@@ -86,7 +86,7 @@ export function Hero() {
             </a>
             
             <a 
-              href="/cv_felipe_orellana.pdf" 
+              href="/CV_FelipeOrellana.pdf" 
               download
               className="group flex items-center gap-2 px-6 py-3 bg-transparent hover:bg-slate-800/50 text-slate-300 hover:text-slate-100 rounded-lg transition-all font-medium border border-slate-700 hover:border-slate-600 hover:-translate-y-0.5 backdrop-blur-sm"
             >

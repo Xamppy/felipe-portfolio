@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ExternalLink, Github, ArrowRight, Rocket, Code2, GraduationCap, Sparkles } from 'lucide-react';
+import { ExternalLink, Github, ArrowRight, Rocket, Code2, GraduationCap, Sparkles, Shield } from 'lucide-react';
 import { 
   SiNextdotjs, 
   SiDjango, 
@@ -16,7 +16,10 @@ import {
   SiHtml5,
   SiCss3,
   SiJavascript,
-  SiMysql
+  SiMysql,
+  SiVite,
+  SiVercel,
+  SiGooglemaps
 } from 'react-icons/si';
 
 // Browser Mockup Component with Scroll-on-Hover support
@@ -133,6 +136,27 @@ const featuredProjects: Project[] = [
     liveUrl: 'https://angelcodesoluciones.cl',
     isFeatured: true,
   },
+  {
+    id: 'retorno-seguro',
+    title: 'Retorno Seguro Chile',
+    role: 'Lead Developer',
+    description: 'Plataforma de Agendamiento con Motor de Tarifas Híbrido',
+    longDescription: 'Solución web progresiva (PWA) para servicios de conductores. Implementa un Motor de Tarifas Híbrido (distancia vs. flat rates) y seguridad perimetral mediante Vercel Edge Middleware para geobloqueo y control de tráfico.',
+    stack: [
+      { name: 'React 19', icon: <SiReact className="w-4 h-4" /> },
+      { name: 'TypeScript', icon: <SiTypescript className="w-4 h-4" /> },
+      { name: 'Vite', icon: <SiVite className="w-4 h-4" /> },
+      { name: 'Vercel Edge', icon: <SiVercel className="w-4 h-4" /> },
+    ],
+    metrics: [
+      { label: 'Lighthouse', value: '95+' },
+      { label: 'Edge Security', value: '✓' },
+    ],
+    image: '/images/projects/screenshots/retornoseguro/1.webp',
+    liveUrl: 'https://www.retornosegurochile.com',
+    isFeatured: true,
+    status: 'Live',
+  },
 ];
 
 const gridProjects: Project[] = [
@@ -212,7 +236,7 @@ export function Projects() {
         </motion.div>
 
         {/* Featured Projects - Large Cards with Scroll Effect */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid lg:grid-cols-3 gap-6 mb-16">
           {featuredProjects.map((project, index) => (
             <motion.div
               key={project.id}
@@ -224,10 +248,22 @@ export function Projects() {
             >
               {/* Featured Badge */}
               <div className="absolute top-4 left-4 z-20">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-500/20 border border-indigo-500/30 rounded-full backdrop-blur-sm">
-                  {index === 0 ? <Sparkles className="w-4 h-4 text-indigo-400" /> : <Rocket className="w-4 h-4 text-indigo-400" />}
-                  <span className="text-sm font-medium text-indigo-400">
-                    {index === 0 ? 'Nuevo' : 'Case Study'}
+                <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full backdrop-blur-sm ${
+                  project.status === 'Live' 
+                    ? 'bg-green-500/20 border border-green-500/30' 
+                    : 'bg-indigo-500/20 border border-indigo-500/30'
+                }`}>
+                  {project.status === 'Live' ? (
+                    <Shield className="w-4 h-4 text-green-400" />
+                  ) : index === 0 ? (
+                    <Sparkles className="w-4 h-4 text-indigo-400" />
+                  ) : (
+                    <Rocket className="w-4 h-4 text-indigo-400" />
+                  )}
+                  <span className={`text-sm font-medium ${
+                    project.status === 'Live' ? 'text-green-400' : 'text-indigo-400'
+                  }`}>
+                    {project.status === 'Live' ? 'Live' : index === 0 ? 'SaaS' : 'Case Study'}
                   </span>
                 </div>
               </div>
